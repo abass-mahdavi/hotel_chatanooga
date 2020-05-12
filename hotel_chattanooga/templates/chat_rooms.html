@@ -1,0 +1,29 @@
+{% extends "layout.html" %} 
+{% block title %} FLAK CHAT ROOMS {% endblock %} 
+
+{% block head %}
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/1.3.6/socket.io.min.js"></script>
+<script src="{{ url_for('static', filename='chat_rooms.js') }}"></script>
+
+{% endblock %}
+
+
+{% block body %}
+<div style="margin-top:30px">
+    <h5>existing chat rooms, click any to enter:</h5>
+    <div class="messageDisplayArea" id="postsPanel">
+        <ul id="chat_rooms:"> 
+            {% for room in rooms %}
+            <li>
+                <a class="flak_chat_room" href= "{{ url_for('chat_room', chat_room_name=room.name)}}"><u>{{room.name}}</u></a> </td>
+            </li>
+            {% endfor %}            
+        </ul>
+    </div>
+    <br>
+    <br>
+    <h5>or, create a new chat room:</h5>
+    <input id="flak_chat_room_to_create" type="text" class="flak_input" placeholder="new chat room name">
+    <button id="flak_chat_room_creation_button" type="submit">Create</button>
+</div>
+{% endblock %}

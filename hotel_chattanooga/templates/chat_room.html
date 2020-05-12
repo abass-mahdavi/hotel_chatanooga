@@ -1,0 +1,23 @@
+{% extends "layout.html" %} 
+{% block title %} FLAK {% endblock %} 
+
+{% block head %}
+<script src="{{ url_for('static', filename='chat_room.js') }}"></script>
+{% endblock %}
+
+
+{% block body %}
+<div style="margin-top:30px">
+    <h5>DISPLAY AREA</h5>
+    <div class="messageDisplayArea" id="postsPanel">
+        <ul id="listOfPosts"> </ul>
+    </div>
+    <br>
+
+    <input id="messageToPost" type="text" class="flak_input" placeholder="type your message here">
+    <div class="input-group-append">
+        <button id="flak_post_message_button" class="btn btn-primary" type="submit">Post</button>
+    </div>
+
+</div>
+{% endblock %}

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>
+    {% block title %}{% endblock %}
+    </title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="{{ url_for('static', filename='layout.js') }}"></script>
+    
+
+    {% block head %}
+    {% endblock %}
+    
+</head>
+<body>
+    <div id="Flak_nav_bar">
+        <ul id="Flak_navbar_links">  
+            <li id="Flak_logo">
+                <h3>Hotel Chatanooga</h3>
+            </li>     
+        </ul>
+    </div>
+    <div id="Flak_block_body">
+        {% block body %} {% endblock %}
+    </div>
+    
+</body>
+</html>

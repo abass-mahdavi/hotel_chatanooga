@@ -1,0 +1,31 @@
+body{
+    background-color: #222;
+    color: blanchedalmond;
+}
+
+a {
+    color: blanchedalmond;
+  }
+
+.messageDisplayArea{
+    overflow: hidden;
+    overflow-y: scroll;
+    height: 40vh;
+    background-color: #333;
+    color: blanchedalmond;
+}
+
+.messageDisplayArea ul{
+    list-style-type:none;
+}
+
+.flak_input{
+    background-color: #333;
+    color: blanchedalmond;
+}
+
+
+
+
+
+
