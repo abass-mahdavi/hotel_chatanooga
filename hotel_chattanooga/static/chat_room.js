@@ -1,18 +1,23 @@
 document.addEventListener('DOMContentLoaded', function() {
+    // Connect to websocket
+    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
+    var participant = localStorage.getItem('user');
 
-    if (!(user = localStorage.getItem('user'))){ 
-        // Connect to websocket
-        var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-        // When connected, configure buttons
+    if (participant){ 
+        //configure buttons
         socket.on('connect', () => {
             // Each button should emit a "submit vote" event
             document.getElementById('flak_post_message_button').onclick = () => {   
                 const new_post = document.getElementById('messageToPost').value;      
-                socket.emit('chat room update', {'post': new_post},{'name' : name["name"]});    
+                const room_name = document.getElementById('flak_room_name').innerHTML; 
+                const data = JSON.parse(participant);
+                data['current_room'] = room_name;
+                data['post'] = new_post;
+                socket.emit('chat room update', data);   
             }
 
-    });
+        });
+    }
 
     // When a new vote is announced, add to the unordered list
     socket.on('rooms update', data => {
@@ -22,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
     });
     
 
-    }
+});
 
 
     
@@ -58,19 +63,6 @@ function wrapInHtml(someString){
 }
 
 
-
-
-*/
-
-
-
-
-
-
-
-
-});
-
 function verifyKeyAndupdateDisplayArea(pressedKey){
     if (pressedKey.key === "Enter") {
         pressedKey.preventDefault();
@@ -93,3 +85,5 @@ function updateDisplayArea(){
 function wrapInHtml(someString){
     return `<br><span class="label customized-primary">${someString}</span><br>`;
 }
+
+*/

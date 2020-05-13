@@ -58,3 +58,8 @@ def create_chat_room(data):
     rooms_as_json_string = json.dumps([vars(rm) for rm in rooms.members])
     print (rooms_as_json_string)
     emit("rooms update", rooms_as_json_string, broadcast=True)
+
+@socketio.on("chat room update")
+def chat_room_update(data):
+    print(data)
+    
