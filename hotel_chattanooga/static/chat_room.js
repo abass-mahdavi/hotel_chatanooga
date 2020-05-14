@@ -2,16 +2,20 @@ document.addEventListener('DOMContentLoaded', function() {
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
     var participant = localStorage.getItem('user');
+    const room_name = document.getElementById('flak_room_name').innerHTML; 
+    const data = JSON.parse(participant);
+    data['current_room'] = room_name;
+    socket.emit('chat room joined', data);  
 
     if (participant){ 
         //configure buttons
         socket.on('connect', () => {
+
+
             // Each button should emit a "submit vote" event
             document.getElementById('flak_post_message_button').onclick = () => {   
-                const new_post = document.getElementById('messageToPost').value;      
-                const room_name = document.getElementById('flak_room_name').innerHTML; 
-                const data = JSON.parse(participant);
-                data['current_room'] = room_name;
+                const new_post = document.getElementById('messageToPost').value;                      
+
                 data['post'] = new_post;
                 socket.emit('chat room update', data);   
             }

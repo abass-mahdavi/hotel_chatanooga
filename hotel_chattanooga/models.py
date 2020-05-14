@@ -10,8 +10,10 @@ class Participant:
 
     def set_current_room(self, room):
         if (self.current_room is not None):
-            self.current_room.remove_participant(self)
+            self.current_room.participants.remove(self.name)
         self.current_room = room
+        if (room):
+            room.participants.append(self.name)
 
 
 class Room:
@@ -26,15 +28,17 @@ class Room:
 
     def insertPost(self, post):
         self.posts.append(post)
+    """    
         while (len(self.posts) > 100):
             self.posts.pop(0) #removes the first (oldest) post of posts)
+    """    
 
     def add_participant(self, participant):
         if (participant.status=="online"):
             participant.set_current_room(self) 
 
     def remove_participant(self,participant):
-        self.participants.remove(participant)
+        #self.participants.remove(participant)
         participant.set_current_room(None)
 
 
