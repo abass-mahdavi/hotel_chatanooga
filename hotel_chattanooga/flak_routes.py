@@ -64,8 +64,11 @@ def create_chat_room(data):
 @socketio.on("chat room joined")
 def chat_room_joined(data):
     participant = participants.get(data["name"])
-    room = rooms.get(data["current_room"])
-    room.add_participant(participant)
+    new_room = rooms.get(data["current_room"])
+    if (participant.current_room is not None):
+        previous_room = rooms.get(participant.current_room)
+        previous_room.remove_participant(participant)
+    new_room.add_participant(participant)
     emit("go to room", data["current_room"])
 
 
