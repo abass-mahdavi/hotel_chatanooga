@@ -1,40 +1,32 @@
 document.addEventListener('DOMContentLoaded', function() {
+    panel = document.getElementById('postsPanel');
+    panel.scrollTop = panel.scrollHeight;
     // Connect to websocket
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-    var participant = localStorage.getItem('user');
-    const room_name = document.getElementById('flak_room_name').innerHTML; 
-    const data = JSON.parse(participant);
-    data['current_room'] = room_name;
-    socket.emit('chat room joined', data);  
+    const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    if (participant){ 
-        //configure buttons
-        socket.on('connect', () => {
+    socket.on('connect', () => {
+        // Each button should emit a "submit vote" event
+        document.getElementById('flak_post_message_button').onclick = () => {   
+            const new_post = document.getElementById('messageToPost').value;
+            const data = JSON.parse(localStorage.getItem('user'));
+            data['post'] = new_post;
+            socket.emit('new post', data);   
+        }
+    });
 
-
-            // Each button should emit a "submit vote" event
-            document.getElementById('flak_post_message_button').onclick = () => {   
-                const new_post = document.getElementById('messageToPost').value;                      
-
-                data['post'] = new_post;
-                socket.emit('chat room update', data);   
-            }
-
-        });
-    }
 
     // When a new vote is announced, add to the unordered list
-    socket.on('rooms update', data => {
-        history.go(0); //reloads the page
-        localStorage.setItem('user', data);
-        console.log(data);
+    socket.on('post received', data => {
+        if (document.getElementById('flak_room_name').innerHTML == data){
+            console.log("done");
+            history.go(0); //reloads the page      
+        }
     });
     
 
 });
 
 
-    
 /*
 
 

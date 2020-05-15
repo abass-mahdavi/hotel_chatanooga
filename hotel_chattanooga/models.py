@@ -1,27 +1,15 @@
 class Participant:
     def __init__(self,name):
         self.name = name
-
-        #at creation participant is not yet online
-        self.status = "online"
         
         #participant has not yet joined any room
-        self.current_room = None
+        self.current_room = ""
 
     def set_current_room(self, room):
-        if (room is not None):
+        if (room):
             self.current_room = room.name
         else:
-            self.current_room = None
-
-"""
-    def set_current_room(self, room):
-        if (self.current_room is not None):
-            self.current_room.participants.remove(self.name)
-        self.current_room = room
-        if (room):
-            room.participants.append(self.name)
-"""
+            self.current_room = ""
 
 class Room:
     def __init__(self,name):
@@ -32,23 +20,28 @@ class Room:
 
         #there are no posts in the room at its creation
         self.posts = []
+ 
+    #removes participant from its previous room an puts it to this room
+    def add_participant(self, participant):
+        participant.set_current_room(self) 
+        self.participants.append(participant.name)
+    
+    def remove_participant(self, participant):
+            self.participants.remove(participant.name)
+            participant.set_current_room("")
 
     def insertPost(self, post):
         self.posts.append(post)
     """    
         while (len(self.posts) > 100):
             self.posts.pop(0) #removes the first (oldest) post of posts)
-    """    
-    #removes participant from its previous room an puts it to this room
-    def add_participant(self, participant):
-        if (participant.status=="online"):
-            participant.set_current_room(self) 
-            self.participants.append(participant.name)
-    
-    def remove_participant(self, participant):
-            self.participants.remove(participant.name)
-            participant.set_current_room(None)
+    """   
 
+class Post:
+    def __init__(self, author_name, message, time_stamp):
+        self.author_name = author_name
+        self.message = message
+        self.time_stamp = time_stamp
 
 
 #a warpper class to handle collections of object with a "name" attribute in FLAK
@@ -72,9 +65,3 @@ class Flak_wrapper:
     def get(self,name):
         return next((member for member in self.members if member.name == name), None)
 
-
-class Post:
-    def __init__(self, author, message, time_stamp):
-        self.author = author
-        self.message = message
-        self.time_stamp = time_stamp

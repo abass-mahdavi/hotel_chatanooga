@@ -15,7 +15,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // When a new vote is announced, add to the unordered list
     socket.on('participant registered', data => {
         const participant = JSON.parse(data);
-        localStorage.setItem('user',data);
+        participant['selected_room'] = "";
+        console.log(participant);
+        localStorage.setItem('user',JSON.stringify(participant));
         chat_rooms = INDEX_PAGE + '/chat_rooms';  
         url_redirect(chat_rooms);
 

@@ -10,7 +10,15 @@
 <div style="margin-top:30px">
     <h5 id="flak_room_name">{{room.name}}</h5>
     <div class="messageDisplayArea" id="postsPanel">
-        <ul id="listOfPosts"> </ul>
+        <ul id="listOfPosts"> 
+            {% for post in room.posts %}
+            <li>
+                <br>
+                <h6 class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</h6>
+                <h4 class="flak_post_message">{{post.message}}</h4>
+            </li>
+            {% endfor %}   
+        </ul>
     </div>
     <br>
 

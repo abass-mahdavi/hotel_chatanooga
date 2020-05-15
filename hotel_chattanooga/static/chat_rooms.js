@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-    var participant = localStorage.getItem('user');
+
     
     // When connected, configure buttons
     socket.on('connect', () => {
@@ -14,9 +14,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.querySelectorAll(".flak_chat_room").forEach(button => {
             button.onclick = () => {
+                let participant = localStorage.getItem('user');
                 const room_name = button.dataset.room;
                 const data = JSON.parse(participant);
-                data['current_room'] = room_name; 
+                data['selected_room'] = room_name; 
+                console.log(data);
+                console.log(data.name);
+                console.log(data.current_room);
+                console.log(data.selected_room);
                 socket.emit('chat room joined', data);
             }
         });
@@ -32,13 +37,39 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
 
-    socket.on("go to room", function (data) {
+    socket.on('go to room', function (data) {
+        let participant = JSON.parse(localStorage.getItem('user'));
+        console.log(participant);
+        console.log(participant.name);
+        console.log(participant.current_room);
+        console.log(participant.selected_room);
+        console.log(data);
+        participant.current_room = data;
+        participant.selected_room = "";
+        console.log(participant);
+        localStorage.setItem('user',JSON.stringify(participant));
+        participant = JSON.parse(localStorage.getItem('user'));
+        console.log(participant);
         window.location = location.protocol + '//' + document.domain + ':' + location.port + "/chat_room/" + data;
+
+
+/*
+        participant.current_room = data;
+        participant.selected_room = "";
+        console.log(participant);
+        localStorage.setItem('user',JSON.stringify(participant));
+        window.location = location.protocol + '//' + document.domain + ':' + location.port + "/chat_room/" + data;
+    
+*/
     });
 
 
 });
 
+
+
+
+/*
 
 //helper function to redirect to chatrooms.html
 //https://stackoverflow.com/a/56321911/8914046
@@ -63,10 +94,6 @@ function url_redirect(url){
     }
     return false;
 };
-
-
-/*
-
 
 document.addEventListener('DOMContentLoaded', function() {
     document.querySelector('#flak_post_message_button').onclick = updateDisplayArea;
