@@ -32,6 +32,18 @@ a {
     LINE-HEIGHT:1px;
 }
 
+.flak_chat_room{
+    background-color:#222;
+    border: none;
+    color: blanchedalmond;
+    padding: 5px 10%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    margin: 4px 2px;
+    cursor: pointer;
+}
 
 
 

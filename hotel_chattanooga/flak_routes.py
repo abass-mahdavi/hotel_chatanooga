@@ -40,10 +40,13 @@ def chat_room(chat_room_name):
 
 @socketio.on("register participant")
 def register(data):
-    participant = Participant(data["name"])
-    participants.insert(participant)
-    print(json.dumps(json.loads(jsonpickle.encode(participant)), indent=2))
-    emit("participant registered", json.dumps(json.loads(jsonpickle.encode(participant)), indent=2))
+    if(participants.get(data["name"])):
+        emit("participant registered","exisiting_user")
+    else:
+        participant = Participant(data["name"])
+        participants.insert(participant)
+        print(json.dumps(json.loads(jsonpickle.encode(participant)), indent=2))
+        emit("participant registered", json.dumps(json.loads(jsonpickle.encode(participant)), indent=2))
 
 @socketio.on("create chat room")
 def create_chat_room(data):

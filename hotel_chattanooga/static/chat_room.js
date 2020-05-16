@@ -9,14 +9,9 @@ document.addEventListener('DOMContentLoaded', function() {
     // Connect to websocket
     const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 
-    socket.on('connect', () => {
-        // Each button should emit a "submit vote" event
-        document.getElementById('flak_post_message_button').onclick = () => {   
-            const new_post = document.getElementById('messageToPost').value;
-            const data = JSON.parse(localStorage.getItem('user'));
-            data['post'] = new_post;
-            socket.emit('new post', data);   
-        }
+    socket.on('connect', function() {
+        document.getElementById('flak_post_message_button').onclick = insertPost;
+        document.onkeydown = verifyKeyAndCreateChatroom;
     });
 
 
@@ -26,7 +21,20 @@ document.addEventListener('DOMContentLoaded', function() {
             history.go(0); //reloads the page      
         }
     });
+
+    function verifyKeyAndCreateChatroom(pressedKey){
+        if (pressedKey.key === "Enter") {
+            pressedKey.preventDefault();
+            insertPost();
+        }
+    }
     
+    function insertPost(){
+        const new_post = document.getElementById('messageToPost').value;
+        const data = JSON.parse(localStorage.getItem('user'));
+        data['post'] = new_post;
+        socket.emit('new post', data);   
+    }    
 
 });
 
@@ -46,66 +54,8 @@ function concierge_chat_style(selector)
 {
     var elements = document.querySelectorAll(selector);
     for (var i = 0; i < elements.length; i++) {
-        elements[i].style.color = "Magenta";
+        elements[i].style.color = "yellow";
         elements[i].style.textAlign = "center";        
     }
 }
 
-
-
-/*
-
-
-document.addEventListener('DOMContentLoaded', function() {
-    document.querySelector('#flak_post_message_button').onclick = updateDisplayArea;
-    document.onkeydown = verifyKeyAndupdateDisplayArea;
-});
-
-function verifyKeyAndupdateDisplayArea(pressedKey){
-    if (pressedKey.key === "Enter") {
-        pressedKey.preventDefault();
-        updateDisplayArea();
-    }
-}
-
-function updateDisplayArea(){
-    const postedMessage = document.getElementById('messageToPost');    
-    const messageDisplayArea = document.getElementById('listOfPosts');
-    if (postedMessage.value.replace(/\s/g, '')  != ""){
-        const node = document.createElement("LI");
-        node.innerHTML = wrapInHtml(postedMessage.value);
-        messageDisplayArea.appendChild(node);
-    }
-    postedMessage.value  = "" ;
-    messageDisplayArea.scrollIntoView({ behavior: 'smooth', block: 'end' }); 
-}
-
-function wrapInHtml(someString){
-    return `<br><span class="label customized-primary">${someString}</span><br>`;
-}
-
-
-function verifyKeyAndupdateDisplayArea(pressedKey){
-    if (pressedKey.key === "Enter") {
-        pressedKey.preventDefault();
-        updateDisplayArea();
-    }
-}
-
-function updateDisplayArea(){
-    const postedMessage = document.getElementById('messageToPost');    
-    const messageDisplayArea = document.getElementById('listOfPosts');
-    if (postedMessage.value.replace(/\s/g, '')  != ""){
-        const node = document.createElement("LI");
-        node.innerHTML = wrapInHtml(postedMessage.value);
-        messageDisplayArea.appendChild(node);
-    }
-    postedMessage.value  = "" ;
-    messageDisplayArea.scrollIntoView({ behavior: 'smooth', block: 'end' }); 
-}
-
-function wrapInHtml(someString){
-    return `<br><span class="label customized-primary">${someString}</span><br>`;
-}
-
-*/
