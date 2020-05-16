@@ -13,7 +13,6 @@ concierge = Participant("Concierge")
 participants.insert(concierge)
 
 
-
 @app.route("/")
 def index():
     return render_template("index.html")
@@ -45,7 +44,6 @@ def register(data):
     else:
         participant = Participant(data["name"])
         participants.insert(participant)
-        print(json.dumps(json.loads(jsonpickle.encode(participant)), indent=2))
         emit("participant registered", json.dumps(json.loads(jsonpickle.encode(participant)), indent=2))
 
 @socketio.on("create chat room")
@@ -59,14 +57,6 @@ def create_chat_room(data):
 
 @socketio.on("chat room joined")
 def chat_room_joined(data):
-
-
-    print(f"data =  {data}")
-    print(f'data["name"] =  {data["name"]}')
-    print(f'data["current_room"] =  {data["current_room"]}')
-    print(f'data["selected_room"] =  {data["selected_room"]}')
-
-
     participant = participants.get(data["name"])
     new_room = rooms.get(data["selected_room"])
     time_stamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
@@ -83,13 +73,6 @@ def chat_room_joined(data):
     new_room.insertPost(participant_joined_post)
     
 
-
-
-@socketio.on("chat room left")
-def chat_room_left(data):
-    print(data)
-
-
 @socketio.on("new post")
 def new_postdata(data):
     current_room = rooms.get(data['current_room'])
@@ -99,42 +82,4 @@ def new_postdata(data):
     #message_to_post = author + ' ' + time_stamp + '\n' + message
     post = Post(author_name,message,time_stamp)
     current_room.insertPost(post)
-    #print(json.dumps([vars(rm) for rm in current_room.posts]))
-    print(json.dumps(json.loads(jsonpickle.encode(current_room)), indent=2))
     emit("post received", current_room.name, broadcast=True)
-
-
-    """
-    import jsonpickle # pip install jsonpickle
-    import json
-
-    serialized = jsonpickle.encode(obj)
-    print(json.dumps(json.loads(serialized), indent=2))
-
-    print(json.dumps(json.loads(jsonpickle.encode(obj)), indent=2))
-
-
-
-    print(json.dumps(vars(current_room)))
-    rooms_as_json_string = json.dumps([vars(rm) for rm in rooms.members])
-    print (rooms_as_json_string)
-
-    #print(message_to_post)
-    post = models.Post(author,message,time_stamp)
-    current_room.insertPost(post)
-    #print(current_room)
-    rooms_as_json_string = json.dumps([vars(rm) for rm in rooms.members])
-    print (rooms_as_json_string)
-
-    """
-
-
-"""
-
-{'name': 'dimitri', 'status': 'online', 'current_room': 'politics', 'post': 'hello from dimitri'}
-
-dimitri 2020-05-13 13:47:50
-hello
-
-"""
-    
