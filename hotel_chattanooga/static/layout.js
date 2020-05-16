@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+
     const currenntLocation = location.protocol + '//' + document.domain + ':' + location.port;
     const links = document.getElementById("Flak_navbar_links");
     //check if any user is already created

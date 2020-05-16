@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    panel = document.getElementById('postsPanel');
+    panel.scrollTop = panel.scrollHeight;
     // Connect to websocket
     var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
 

@@ -8,14 +8,14 @@
 
 {% block body %}
 <div style="margin-top:30px">
-    <h5 id="flak_room_name">{{room.name}}</h5>
+    <h1 id="flak_room_name" data-room = "{{room.name}}">{{room.name}} chatroom</h1>
     <div class="messageDisplayArea" id="postsPanel">
         <ul id="listOfPosts"> 
             {% for post in room.posts %}
-            <li>
+            <li class="{{post.author_name}}">
                 <br>
-                <h6 class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</h6>
-                <h4 class="flak_post_message">{{post.message}}</h4>
+                <h5 class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</h5>
+                <h2 class="flak_post_message">{{post.message}}</h2>
             </li>
             {% endfor %}   
         </ul>
