@@ -1,4 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
+    document.getElementById('flak_chat_room_to_create').select();
     panel = document.getElementById('postsPanel');
     panel.scrollTop = panel.scrollHeight;
     // Connect to websocket
@@ -8,7 +9,7 @@ document.addEventListener('DOMContentLoaded', () => {
     socket.on('connect', function() {
         document.getElementById('flak_chat_room_creation_button').onclick = createChatroom;
         document.onkeydown = verifyKeyAndCreateChatroom;
-        
+
         document.querySelectorAll(".flak_chat_room").forEach(button => {
             button.onclick = () => {
                 let participant = localStorage.getItem('user');
@@ -23,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // When a new vote is announced, add to the unordered list
     socket.on('rooms update', data => {
         history.go(0); //reloads the page
-        console.log(data);
     });
 
     socket.on('go to room', function (data) {

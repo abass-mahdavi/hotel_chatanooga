@@ -1,26 +1,11 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const INDEX_PAGE = location.protocol + '//' + document.domain + ':' + location.port;
+    user = JSON.parse(localStorage.getItem('user'));
+    if (user){
+        window.location = INDEX_PAGE + '/chat_rooms';
+    }
+    else{
+        window.location = INDEX_PAGE + '/login';
+    }
 
-    // Connect to websocket
-    var socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-    // When connected, configure buttons
-    socket.on('connect', () => {
-
-        // Each button should emit a "submit vote" event
-        document.querySelectorAll('button').forEach(button => {
-            button.onclick = () => {
-                const selection = button.dataset.vote;
-                socket.emit('submit vote', {'selection': selection});
-            };
-        });
-    });
-
-    // When a new vote is announced, add to the unordered list
-    socket.on('vote totals', data => {
-        document.querySelector('#yes').innerHTML = data.yes;
-        document.querySelector('#no').innerHTML = data.no;
-        document.querySelector('#maybe').innerHTML = data.maybe;
-        console.log(data);
-        localStorage.setItem('data', JSON.stringify(data));
-    });
 });

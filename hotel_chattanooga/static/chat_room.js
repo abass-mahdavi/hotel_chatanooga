@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    document.getElementById('messageToPost').select();
     const participant_name = JSON.parse(localStorage.getItem('user')).name;
     self_chat_style("." + participant_name);
     concierge_chat_style(".Concierge");
@@ -15,7 +16,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
 
-    // When a new vote is announced, add to the unordered list
     socket.on('post received', data => {
         if (document.getElementById('flak_room_name').dataset.room == data){
             history.go(0); //reloads the page      
