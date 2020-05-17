@@ -2,7 +2,6 @@
 {% block title %} FLAK {% endblock %} 
 
 {% block head %}
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <script src="{{ url_for('static', filename='chat_room.js') }}"></script>
 {% endblock %}
 
@@ -15,8 +14,8 @@
             {% for post in room.posts %}
             <li class="{{post.author_name}}">
                 <br>
-                <h7 class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</h7>
-                <div class="w3-panel"><i>{{post.message}}</i></div>
+                <h5 class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</h5>
+                <h2 class="flak_post_message">{{post.message}}</h2>
             </li>
             {% endfor %}   
         </ul>

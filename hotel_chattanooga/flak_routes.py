@@ -144,11 +144,11 @@ def chatBots():
     time_stamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
     trump_post = Post("Donald J Trump",trump_quote,time_stamp)
     chatBots_room.insertPost(trump_post)
-    print (trump_quote)
+
 
 
 scheduler = BackgroundScheduler()
-job = scheduler.add_job(chatBots, 'interval', seconds=30)
+job = scheduler.add_job(chatBots, 'interval', seconds=20)
 scheduler.start()
 
 

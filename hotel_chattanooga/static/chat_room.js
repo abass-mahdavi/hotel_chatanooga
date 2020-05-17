@@ -1,5 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    setInterval(refresh, 10000);
+
     const INDEX_PAGE = location.protocol + '//' + document.domain + ':' + location.port;
     if (localStorage.getItem('user') == null){
         window.location = INDEX_PAGE ; 
@@ -40,6 +42,10 @@ document.addEventListener('DOMContentLoaded', function() {
             data['post'] = new_post;
             socket.emit('new post', data);   
         }    
+    }
+
+    function refresh(){
+        history.go(0); //reloads the page      
     }
 });
 
