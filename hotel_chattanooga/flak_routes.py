@@ -1,10 +1,48 @@
-import os, requests, jsonpickle, json, ast
+import os, requests, jsonpickle, json, ast, time
 from time import gmtime, strftime
 from flask import Flask, jsonify, render_template, request, redirect, url_for
 from flask_socketio import SocketIO, emit
+from apscheduler.schedulers.background import BackgroundScheduler
 from hotel_chattanooga import app, settings, socketio, models
 from hotel_chattanooga.models import *
 
+
+
+"""
+https://www.techcoil.com/blog/how-to-use-flask-apscheduler-in-your-python-3-flask-application-to-run-multiple-tasks-in-parallel-from-a-single-http-request/
+
+
+from flask import Flask
+from flask_apscheduler import APScheduler
+ 
+import time
+ 
+app = Flask(__name__)
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+ 
+@app.route('/')
+def welcome():
+    return 'Welcome to flask_apscheduler demo', 200
+ 
+@app.route('/run-tasks')
+def run_tasks():
+    for i in range(10):
+        app.apscheduler.add_job(func=scheduled_task, trigger='date', args=[i], id='j'+str(i))
+ 
+    return 'Scheduled several long running tasks.', 200
+ 
+def scheduled_task(task_id):
+    for i in range(10):
+        time.sleep(1)
+        print('Task {} running iteration {}'.format(task_id, i))
+         
+app.run(host='0.0.0.0', port=12345)
+
+
+
+"""
 
 participants = Flak_wrapper()
 rooms = Flak_wrapper()
@@ -86,3 +124,32 @@ def new_postdata(data):
     post = Post(author_name,message,time_stamp)
     current_room.insertPost(post)
     emit("post received", current_room.name, broadcast=True)
+
+"""
+chatBots
+
+    # Make a get request to get the latest position of the international space station from the opennotify api.
+    response = requests.get("https://api.whatdoestrumpthink.com/api/v1/quotes/random")
+
+    # Print the the response.
+    print(response.json()['message'])
+"""
+chatBots_room = Room("chatBots")
+donald_J_Trump = Participant("Donald J Trump")
+rooms.insert(chatBots_room)
+participants.insert(donald_J_Trump)
+
+def chatBots():
+    trump_quote = requests.get("https://api.whatdoestrumpthink.com/api/v1/quotes/random").json()['message']
+    time_stamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
+    trump_post = Post("Donald J Trump",trump_quote,time_stamp)
+    chatBots_room.insertPost(trump_post)
+    print (trump_quote)
+
+
+scheduler = BackgroundScheduler()
+job = scheduler.add_job(chatBots, 'interval', seconds=30)
+scheduler.start()
+
+
+
