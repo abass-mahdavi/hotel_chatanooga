@@ -8,7 +8,7 @@
 
 {% block body %}
 <div style="margin-top:30px">
-    <h1 id="flak_room_name" data-room = "{{room.name}}">{{room.name}} chatroom</h1>
+    <h2 id="flak_room_name" data-room = "{{room.name}}">{{room.name}} chatroom</h2>
     <div class="messageDisplayArea" id="postsPanel">
         <ul id="listOfPosts"> 
             {% for post in room.posts %}

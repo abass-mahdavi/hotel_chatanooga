@@ -10,7 +10,7 @@
 
 {% block body %}
 <div style="margin-top:30px">
-    <h5>existing chat rooms, click any to enter:</h5>
+    <h3>click on an existing chatroom to enter:</h3>
     <div class="messageDisplayArea" id="postsPanel">
         <ul id="chat_rooms:"> 
             {% for room in rooms %}
@@ -26,9 +26,7 @@
             {% endfor %}            
         </ul>
     </div>
-    <br>
-    <br>
-    <h5>or, create a new chat room:</h5>
+    <h3>or, create a new one:</h3>
     <input id="flak_chat_room_to_create" type="text" class="flak_input" placeholder="new chat room name">
     <button id="flak_chat_room_creation_button" type="submit">Create</button>
 </div>

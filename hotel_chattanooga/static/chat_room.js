@@ -1,41 +1,46 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    document.getElementById('messageToPost').select();
-    const participant_name = JSON.parse(localStorage.getItem('user')).name;
-    self_chat_style("." + participant_name);
-    concierge_chat_style(".Concierge");
-
-    panel = document.getElementById('postsPanel');
-    panel.scrollTop = panel.scrollHeight;
-    // Connect to websocket
-    const socket = io.connect(location.protocol + '//' + document.domain + ':' + location.port);
-
-    socket.on('connect', function() {
-        document.getElementById('flak_post_message_button').onclick = insertPost;
-        document.onkeydown = verifyKeyAndCreateChatroom;
-    });
-
-
-    socket.on('post received', data => {
-        if (document.getElementById('flak_room_name').dataset.room == data){
-            history.go(0); //reloads the page      
-        }
-    });
-
-    function verifyKeyAndCreateChatroom(pressedKey){
-        if (pressedKey.key === "Enter") {
-            pressedKey.preventDefault();
-            insertPost();
-        }
+    const INDEX_PAGE = location.protocol + '//' + document.domain + ':' + location.port;
+    if (localStorage.getItem('user') == null){
+        window.location = INDEX_PAGE ; 
     }
-    
-    function insertPost(){
-        const new_post = document.getElementById('messageToPost').value;
-        const data = JSON.parse(localStorage.getItem('user'));
-        data['post'] = new_post;
-        socket.emit('new post', data);   
-    }    
+    else {
+        document.getElementById('messageToPost').select();
+        const participant_name = JSON.parse(localStorage.getItem('user')).name;
+        self_chat_style("." + participant_name);
+        concierge_chat_style(".Concierge");
 
+        panel = document.getElementById('postsPanel');
+        panel.scrollTop = panel.scrollHeight;
+        // Connect to websocket
+        const socket = io.connect(INDEX_PAGE);
+
+        socket.on('connect', function() {
+            document.getElementById('flak_post_message_button').onclick = insertPost;
+            document.onkeydown = verifyKeyAndCreateChatroom;
+        });
+
+
+        socket.on('post received', data => {
+            if (document.getElementById('flak_room_name').dataset.room == data){
+                history.go(0); //reloads the page      
+            }
+        });
+
+        function verifyKeyAndCreateChatroom(pressedKey){
+            if (pressedKey.key === "Enter") {
+                pressedKey.preventDefault();
+                insertPost();
+            }
+        }
+        
+        function insertPost(){
+            const new_post = document.getElementById('messageToPost').value;
+            const data = JSON.parse(localStorage.getItem('user'));
+            data['post'] = new_post;
+            socket.emit('new post', data);   
+        }    
+    }
 });
 
 
