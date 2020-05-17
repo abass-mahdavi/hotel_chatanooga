@@ -41,6 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location = INDEX_PAGE + "/chat_room/" + data;
         });
 
+        socket.on('room exists already', ()=>{
+            alert ("chatroom exists already");
+        });
+
         function verifyKeyAndCreateChatroom(pressedKey){
             if (pressedKey.key === "Enter") {
                 pressedKey.preventDefault();
@@ -50,13 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function createChatroom(){
             const chat_room_name = document.getElementById('flak_chat_room_to_create').value;
-            if (document.querySelectorAll(`[data-room=${chat_room_name}]`).length > 0){
-                console.log(document.querySelectorAll(`[data-room=${chat_room_name}]`));
-                alert ("chatroom exists already")
-            } 
-            else{
-                socket.emit('create chat room', {'chat_room_name': chat_room_name});    
-            }
+            socket.emit('create chat room', {'chat_room_name': chat_room_name});
         }
     }
 });

@@ -49,10 +49,13 @@ def register(data):
 @socketio.on("create chat room")
 def create_chat_room(data):
     room_name = data["chat_room_name"]
-    room = Room(room_name)
-    rooms.insert(room)
-    rooms_as_json_string = json.dumps(json.loads(jsonpickle.encode(participants)), indent=2)
-    emit("rooms update", rooms_as_json_string, broadcast=True)
+    if (rooms.get(room_name)):
+        emit("room exists already")
+    else:
+        room = Room(room_name)
+        rooms.insert(room)
+        rooms_as_json_string = json.dumps(json.loads(jsonpickle.encode(participants)), indent=2)
+        emit("rooms update", rooms_as_json_string, broadcast=True)
 
 
 @socketio.on("chat room joined")
