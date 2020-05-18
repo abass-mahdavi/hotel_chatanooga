@@ -5,51 +5,15 @@ from flask_socketio import SocketIO, emit
 from apscheduler.schedulers.background import BackgroundScheduler
 from hotel_chattanooga import app, settings, socketio, models
 from hotel_chattanooga.models import *
+from hotel_chattanooga.quotes_generator import *
+from random import randrange
 
-
-
-"""
-https://www.techcoil.com/blog/how-to-use-flask-apscheduler-in-your-python-3-flask-application-to-run-multiple-tasks-in-parallel-from-a-single-http-request/
-
-
-from flask import Flask
-from flask_apscheduler import APScheduler
- 
-import time
- 
-app = Flask(__name__)
-scheduler = APScheduler()
-scheduler.init_app(app)
-scheduler.start()
- 
-@app.route('/')
-def welcome():
-    return 'Welcome to flask_apscheduler demo', 200
- 
-@app.route('/run-tasks')
-def run_tasks():
-    for i in range(10):
-        app.apscheduler.add_job(func=scheduled_task, trigger='date', args=[i], id='j'+str(i))
- 
-    return 'Scheduled several long running tasks.', 200
- 
-def scheduled_task(task_id):
-    for i in range(10):
-        time.sleep(1)
-        print('Task {} running iteration {}'.format(task_id, i))
-         
-app.run(host='0.0.0.0', port=12345)
-
-
-
-"""
 
 participants = Flak_wrapper()
 rooms = Flak_wrapper()
 
 concierge = Participant("Concierge")
 participants.insert(concierge)
-
 
 @app.route("/")
 def index():
@@ -74,6 +38,8 @@ def chat_room(chat_room_name):
     room = rooms.get(chat_room_name)
     if room is not None:
         return render_template ("chat_room.html", room = room)
+    else:
+        return redirect(url_for("chat_rooms"))
 
 @socketio.on("register participant")
 def register(data):
@@ -137,42 +103,33 @@ def go_to_chatrooms_board(data):
     current_room.insertPost(participants_left_post)
     emit("participant ready to go to chatrooms board")
 
-
-
-
 """
-@socketio.on("go to chatrooms board")
-def go_to_chatrooms_board(data):
 
-        announcement = participant.name + " left "
-        time_stamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-        participants_left_post = Post(concierge.name,announcement,time_stamp)
-        current_room.insertPost(participants_left_post)
+chatbots section
 
-
-chatBots
-
-    # Make a get request to get the latest position of the international space station from the opennotify api.
-    response = requests.get("https://api.whatdoestrumpthink.com/api/v1/quotes/random")
-
-    # Print the the response.
-    print(response.json()['message'])
 """
 chatBots_room = Room("chatBots")
 donald_J_Trump = Participant("Donald J Trump")
+nietzche = Participant("Frederic Nietzche")
+fortune_cookie = Participant("Fortune cookie")
 rooms.insert(chatBots_room)
 participants.insert(donald_J_Trump)
+participants.insert(nietzche)
+participants.insert(fortune_cookie)
 
 def chatBots():
-    trump_quote = requests.get("https://api.whatdoestrumpthink.com/api/v1/quotes/random").json()['message']
+    random_number = randrange(3)    
     time_stamp = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-    trump_post = Post("Donald J Trump",trump_quote,time_stamp)
-    chatBots_room.insertPost(trump_post)
-
-
+    if (random_number == 0):
+        post = Post("Donald J Trump",trump_quote(),time_stamp)        
+    elif (random_number == 1):
+        post = Post("Frederic Nietzche",nietzche_quote(),time_stamp) 
+    else:
+        post = Post("Fortune cookie",fortune_cookie_quote(),time_stamp) 
+    chatBots_room.insertPost(post)
 
 scheduler = BackgroundScheduler()
-job = scheduler.add_job(chatBots, 'interval', seconds=20)
+job = scheduler.add_job(chatBots, 'interval', seconds=12)
 scheduler.start()
 
 

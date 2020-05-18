@@ -15,7 +15,8 @@
             {% for post in room.posts %}
             <li class="{{post.author_name}}">
                 <br>
-                <h7 class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</h7>
+                <br>
+                <p class="flak_post_sender">{{post.author_name}} {{post.time_stamp}}</p>
                 <div class="w3-panel"><i>{{post.message}}</i></div>
             </li>
             {% endfor %}   
