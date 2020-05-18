@@ -8,7 +8,7 @@
 
 
 {% block body %}
-<div style="margin-top:30px">
+<div style="margin-top:30px; margin-left:20px">
     <h2 id="flak_room_name" data-room = "{{room.name}}">current room: {{room.name}}</h2>
     <div class="messageDisplayArea" id="postsPanel">
         <ul id="listOfPosts"> 
@@ -27,7 +27,8 @@
     <input id="messageToPost" type="text" class="flak_input" placeholder="type your message here">
     <button id="flak_post_message_button" type="submit">Post</button>
     <br>
-    <a href="{{ url_for('chat_rooms') }}"><h3>click here to visit other chatrooms</h3></a>
+    <br>
+    <button id="go_to_chatrooms_board" >click here to visit other chatrooms</button>
 
 
 </div>

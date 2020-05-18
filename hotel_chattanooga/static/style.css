@@ -27,6 +27,7 @@ a {
     overflow-y: scroll;
     width:80%;
     height: 50vh;
+    margin-left: 10px;  
     background-color: #333;
     color: blanchedalmond;
 }

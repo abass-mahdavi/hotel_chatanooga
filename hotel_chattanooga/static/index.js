@@ -6,7 +6,27 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     else
     {
-        window.location = INDEX_PAGE + '/chat_rooms';
+        const current_room = JSON.parse(localStorage.getItem('user'))['current_room'];
+        if (current_room == "")
+        {
+            window.location = INDEX_PAGE + '/chat_rooms';
+        }
+        else
+        {
+            window.location = INDEX_PAGE + '/chat_room/' + current_room;
+        }
+
     }
 
 });
+
+
+/*
+
+const current_room = JSON.parse(localStorage.getItem('user')['current_room'];
+if (current_room == "")
+    window.location = INDEX_PAGE + '/chat_rooms';
+else
+    window.location = INDEX_PAGE + '/chat_room/' + current_room;
+
+*/

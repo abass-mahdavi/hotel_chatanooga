@@ -20,13 +20,24 @@ document.addEventListener('DOMContentLoaded', function() {
         socket.on('connect', function() {
             document.getElementById('flak_post_message_button').onclick = insertPost;
             document.onkeydown = verifyKeyAndCreateChatroom;
+            document.getElementById('go_to_chatrooms_board').onclick = gotToChatroomsBoard;
         });
+
+
 
 
         socket.on('post received', data => {
             if (document.getElementById('flak_room_name').dataset.room == data){
                 history.go(0); //reloads the page      
             }
+        });
+
+        socket.on('participant ready to go to chatrooms board', ()=>{
+            const participant = JSON.parse(localStorage.getItem('user'));
+            participant['current_room'] = "";
+            localStorage.setItem('user',JSON.stringify(participant));
+            window.location = INDEX_PAGE + '/chat_rooms';  
+
         });
 
         function verifyKeyAndCreateChatroom(pressedKey){
@@ -42,6 +53,11 @@ document.addEventListener('DOMContentLoaded', function() {
             data['post'] = new_post;
             socket.emit('new post', data);   
         }    
+
+        function gotToChatroomsBoard(){
+            const data = JSON.parse(localStorage.getItem('user'));
+            socket.emit('go to chatrooms board', data);   
+        }
     }
 
     function refresh(){
