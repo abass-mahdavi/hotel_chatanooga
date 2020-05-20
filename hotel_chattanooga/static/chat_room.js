@@ -1,6 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
 
-    setInterval(refresh, 10000);
+    setInterval(refresh, 5000);
 
     const INDEX_PAGE = location.protocol + '//' + document.domain + ':' + location.port;
     if (localStorage.getItem('user') == null){
@@ -61,7 +61,9 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 
     function refresh(){
-        history.go(0); //reloads the page      
+        if (document.getElementById('messageToPost').value == "")
+            history.go(0); //reloads the page      
+
     }
 });
 

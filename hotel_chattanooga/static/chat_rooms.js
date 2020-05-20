@@ -43,6 +43,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         socket.on('room exists already', ()=>{
             alert ("chatroom exists already");
+            history.go(0); //reloads the page 
         });
 
         function verifyKeyAndCreateChatroom(pressedKey){
@@ -54,7 +55,12 @@ document.addEventListener('DOMContentLoaded', () => {
         
         function createChatroom(){
             const chat_room_name = document.getElementById('flak_chat_room_to_create').value;
-            socket.emit('create chat room', {'chat_room_name': chat_room_name});
+            if(chat_room_name.match(/[^0-9a-z]/i)){
+                alert("Only letters and digits allowed!");
+                history.go(0); //reloads the page 
+            }                
+            else
+                socket.emit('create chat room', {'chat_room_name': chat_room_name});
         }
     }
 });

@@ -129,7 +129,7 @@ def chatBots():
     chatBots_room.insertPost(post)
 
 scheduler = BackgroundScheduler()
-job = scheduler.add_job(chatBots, 'interval', seconds=12)
+job = scheduler.add_job(chatBots, 'interval', seconds=15)
 scheduler.start()
 
 
