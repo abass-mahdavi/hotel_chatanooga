@@ -33,8 +33,17 @@ class Room:
     def insertPost(self, post):
         self.posts.append(post)
 
+#for demo purposes we'll allow only up to 5 messages
+        while (len(self.posts) > 5):
+            self.posts.pop(0) #removes the first (oldest) post of posts)
+
+
+#for production we'll allow up to 100 messages
+"""
         while (len(self.posts) > 100):
             self.posts.pop(0) #removes the first (oldest) post of posts)
+"""
+
 
 
 class Post:

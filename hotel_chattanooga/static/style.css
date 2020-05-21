@@ -22,6 +22,17 @@ a {
     color: blanchedalmond;
   }
 
+.flak_input{
+    height: 30px;
+    font-size: 14pt;
+
+}
+
+.flak_button{
+    height: 35px;
+    font-size: 14pt;
+}
+
 .messageDisplayArea{
     overflow: hidden;
     overflow-y: scroll;
