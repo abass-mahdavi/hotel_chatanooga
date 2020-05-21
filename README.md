@@ -3,34 +3,39 @@
 Web Programming with Python and JavaScript
 
 
-# Mars_planet_librabry
-Mars_planet_librabry is the Python code for a dummy book review website
-context: CS50 Web Programming Project 1
+# Hotel Chatanooga
+"Hotel Chatanooga" is a chatroom application coded with Python on the server side and witj JavaScript on the client side
+context: CS50 Web Programming Project 2
 
 ## Project structure: 
 The project is organised as follows:
 
-		├── application.py
-		├── import
-		│   └── import.py
-		└── mars_planet_library
-			├── database_requests.py
-			├── forms.py
-			├── __init__.py
-			├── routes.py
-			├── settings.py
-			├── static
-			│   └── style.css
-			└── templates
-				├── about.html
-				├── book.html
-				├── home.html
-				├── import_books.html
-				├── layout.html
-				├── login.html
-				├── register.html
-				├── search.html
-				└── search_result.html
+```
+├── application.py
+├── hotel_chattanooga
+│   ├── flak_routes.py
+│   ├── __init__.py
+│   ├── models.py
+│   ├── quotes_generator.py
+│   ├── settings.py
+│   ├── static
+│   │   ├── chat_room.js
+│   │   ├── chat_rooms.js
+│   │   ├── index.js
+│   │   ├── layout.js
+│   │   ├── login.js
+│   │   └── style.css
+│   └── templates
+│       ├── chat_room.html
+│       ├── chat_rooms.html
+│       ├── debug.html
+│       ├── index.html
+│       ├── layout.html
+│       └── login.html
+├── README.md
+└── requirements.txt
+
+```
 
 There are 2 basically two folders containning python code.
 - import
