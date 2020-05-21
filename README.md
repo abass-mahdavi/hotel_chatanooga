@@ -37,129 +37,30 @@ The project is organised as follows:
 
 ```
 
-There are 2 basically two folders containning python code.
-- import
-- mars_planet_library
+On the server side, we these modules:
+* routes.py, which contains all the code that uses Flask framework. The routes, and the sockets.
+* models.py handles the the objects used by routes. Theses object are python classes that represent the 
+  * participants (class participant), 
+  * the chatrooms (class room), the posts (class post), and 
+  * a class designated as "wrapper" that basically is an arry of object plus some tailored getters and setters. This wrapper class is used by routes.py to handle lists of participants or lists of chatrooms.
+* quoteGenerator.py which is a set of functions that allows to some chatbots to fetch some quotes either through lists or through web apis
 
-There is also a sort of "main" file "application.py" that is simply an entry point to the project for Flask.
-The "import" module is independent from the rest. It's part the the project requirements, and it's purpose id to mange the upload of the provided csv file "books.csv".
-The "mars_planet_library" folder contains all the logic of the website.
- __init__.py is required for the project organisation (explained here : https://flask.palletsprojects.com/en/1.1.x/patterns/packages/)
- routes.py handles all the interractions with Flask
- database_requests.py handles all the SQL querries
- forms.py is kind of a helper file for routes.py, it handles all the forms on pages where user input is required (registration, login, search and rating)
+There is also a sort of "main" file "application.py" that is simply an entry point to the project for Flask, and
+ __init__.py is required for the project organisation 8makes divers modules work toghter and handle environment variables).
+ 
 
-The underlying database contains four tables. The foolowing sreenshot should be self explanatory:
+On the client side, the application uses these HTML pages:
+* index.html  (routes to some other pages based on the context)
+* login.html  (invites the user to give his or her username, no password is required)
+* rooms.html (displays the chatrooms and allows to create new one)
+* room.html (that is the chatroom)
 
-```
-cs_50_books=> \dt
-        List of relations
- Schema |  Name   | Type  | Owner
---------+---------+-------+-------
- public | authors | table | me
- public | books   | table | me
- public | reviews | table | me
- public | users   | table | me
-(4 rows)
+these html pages are "controled" by their respective js pages, for example rooms.html is managed by roomd.js
+login.js, rooms.js and room.js communicate with the server (through routes.py)using websockets to send or receive datas.
 
-cs_50_books=> SELECT * FROM authors LIMIT 2;
-  id   |       name      
--------+------------------
- 11502 | Raymond E. Feist
- 11503 | Susan Cooper
-(2 rows)
-
-cs_50_books=> SELECT * FROM books LIMIT 2;
-  id   |    isbn    |         title         | author_id | year
--------+------------+-----------------------+-----------+------
- 25001 | 0380795272 | Krondor: The Betrayal |     11502 | 1998
- 25002 | 1416949658 | The Dark Is Rising    |     11503 | 1973
-(2 rows)
-
-cs_50_books=> SELECT * FROM users LIMIT 2;
- id |      name      |        email        |                        password_hash                        
-----+----------------+---------------------+--------------------------------------------------------------
- 53 | Dimitri Kissov | hello@dimitri.ru    | $2b$12$yr2PXc3rep94VBl5XCtbheuaVPE7uFgK2RpgFTI9otBFV5UbQA/ye
- 54 | Bud Turgidson  | five@stranglove.com | $2b$12$PZ7eyNYffg/sY3mAw6rAge98mgPl4J/NdmweD1DQmK2LxQKEOm81a
-(2 rows)
-
-cs_50_books=> SELECT * FROM reviews LIMIT 2;
- id | book_id | user_id | rating |       review        
-----+---------+---------+--------+---------------------
- 45 |   28172 |      53 |      5 | I became rich
- 46 |   28120 |      54 |      4 | strange, so strange
-(2 rows)
-
-```
-
-## mars-planet-library pages walkthrough
-
-at the moment this readme file is being written, the website is deployed. its URL is: https://mars-planet-library.herokuapp.com
-
-### home
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10000_home_page.JPG?raw=true" width="75%">
-
-### about
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10100_about.JPG" width="75%">
-
-### registration
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10300_registration_2_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10400_registration_3_.JPG" width="75%">
-
-### login
-<img src="(https://github.com/abass-mahdavi/images/blob/master/screenshots/10500_login_1_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10600_login_2_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10700_login_3_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10800_login_4_.JPG" width="75%">
-
-### search
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/10900_search_1_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/11000_search_2_.JPG" width="75%">
+Here is a link to a video demo:  
+        https:/youtu.be/igve0n_gupg
 
 
-### book review and rating
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/11195_book_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/12000_goodreads_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/11300_book_2_.JPG" width="75%">
-
-#### api
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/12111_api_1_2_.JPG" width="75%">
-<img src="https://github.com/abass-mahdavi/images/blob/master/screenshots/12211_api_2_2_.JPG   " width="75%">
-
-## the code
-The python coded being already available in the repository won't be detailed
-
-The underlying sql have been created using the following commands:
-
-```
-CREATE TABLE authors (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL UNIQUE
-);
 
 
-CREATE TABLE books (
-    id SERIAL PRIMARY KEY,
-    isbn VARCHAR NOT NULL,
-    title VARCHAR NOT NULL,
-    author_id INTEGER NOT NULL REFERENCES authors,
-    year INTEGER NOT NULL
-);
-
-
-CREATE TABLE users (
-    id SERIAL PRIMARY KEY,
-    name VARCHAR NOT NULL UNIQUE,
-    email VARCHAR,
-    password_hash VARCHAR NOT NULL    
-);
-
-
-CREATE TABLE reviews (
-    id SERIAL PRIMARY KEY,
-    book_id INTEGER NOT NULL REFERENCES books,
-    user_id INTEGER NOT NULL REFERENCES users,
-    rating INTEGER,
-    review VARCHAR
-);
-```
