@@ -1,13 +1,21 @@
 document.addEventListener('DOMContentLoaded', function() {
+    
+    setInterval(refresh, 5000);   
 
-    setInterval(refresh, 5000);
 
     const INDEX_PAGE = location.protocol + '//' + document.domain + ':' + location.port;
     if (localStorage.getItem('user') == null){
         window.location = INDEX_PAGE ; 
     }
     else {
-        document.getElementById('messageToPost').select();
+        if (localStorage.getItem('postBuffer')!=null){
+            document.getElementById('messageToPost').value = localStorage.getItem('postBuffer');
+        }
+        //get the message to post and position the cursor at the end
+        input = document.getElementById('messageToPost');
+        input.select();
+        moveCursorToEnd(input);
+        
         const participant_name = JSON.parse(localStorage.getItem('user')).name;
         self_chat_style("." + participant_name);
         concierge_chat_style(".Concierge");
@@ -19,7 +27,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         socket.on('connect', function() {
             document.getElementById('flak_post_message_button').onclick = insertPost;
-            document.onkeydown = verifyKeyAndCreateChatroom;
+            document.onkeydown = verifyKeyAndinsertPost;
             document.getElementById('go_to_chatrooms_board').onclick = gotToChatroomsBoard;
         });
 
@@ -28,6 +36,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         socket.on('post received', data => {
             if (document.getElementById('flak_room_name').dataset.room == data){
+
                 history.go(0); //reloads the page      
             }
         });
@@ -40,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         });
 
-        function verifyKeyAndCreateChatroom(pressedKey){
+        function verifyKeyAndinsertPost(pressedKey){
             if (pressedKey.key === "Enter") {
                 pressedKey.preventDefault();
                 insertPost();
@@ -51,18 +60,36 @@ document.addEventListener('DOMContentLoaded', function() {
             const new_post = document.getElementById('messageToPost').value;
             const data = JSON.parse(localStorage.getItem('user'));
             data['post'] = new_post;
+            localStorage.setItem('postBuffer','');
+            localStorage.setItem('counter',0);
             socket.emit('new post', data);   
         }    
 
         function gotToChatroomsBoard(){
             const data = JSON.parse(localStorage.getItem('user'));
+            localStorage.setItem('postBuffer','');
+            localStorage.setItem('counter',0);
             socket.emit('go to chatrooms board', data);   
         }
     }
 
     function refresh(){
-        if (document.getElementById('messageToPost').value == "")
-            history.go(0); //reloads the page      
+        if (localStorage.getItem('counter')==null){
+            localStorage.setItem('counter',0);
+        }
+        if (localStorage.getItem('postBuffer')==null){
+            localStorage.setItem('postBuffer','');
+        }
+        const messageToPost = document.getElementById('messageToPost').value;
+        if (messageToPost == "" || localStorage.getItem('counter') > 1){
+            history.go(0); //reloads the page  
+            localStorage.setItem('counter',0);
+        }
+        else{
+            const counter  = parseInt(localStorage.getItem('counter'));
+            localStorage.setItem('counter',counter + 1);
+            localStorage.setItem('postBuffer',messageToPost);
+        }
 
     }
 });
@@ -85,6 +112,18 @@ function concierge_chat_style(selector)
     for (var i = 0; i < elements.length; i++) {
         elements[i].style.color = "yellow";
         elements[i].style.textAlign = "center";        
+    }
+}
+
+
+function moveCursorToEnd(el) {
+    if (typeof el.selectionStart == "number") {
+        el.selectionStart = el.selectionEnd = el.value.length;
+    } else if (typeof el.createTextRange != "undefined") {
+        el.focus();
+        var range = el.createTextRange();
+        range.collapse(false);
+        range.select();
     }
 }
 

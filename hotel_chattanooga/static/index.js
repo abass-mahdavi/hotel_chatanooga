@@ -20,13 +20,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
 });
 
-
-/*
-
-const current_room = JSON.parse(localStorage.getItem('user')['current_room'];
-if (current_room == "")
-    window.location = INDEX_PAGE + '/chat_rooms';
-else
-    window.location = INDEX_PAGE + '/chat_room/' + current_room;
-
-*/

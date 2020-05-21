@@ -15,7 +15,7 @@ document.addEventListener('DOMContentLoaded', () => {
             document.onkeydown = verifyKeyAndregisterUser;
         });
     
-        // When a new vote is announced, add to the unordered list
+
         socket.on('participant registered', data => {
             if (data == "exisiting_user"){
                 alert("username already registered, please choose another usename");
